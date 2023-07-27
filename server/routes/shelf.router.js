@@ -10,7 +10,6 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   let sqlQuery = `SELECT * FROM "item";`;
   pool.query(sqlQuery)
   .then (result => {
-    res.sendStatus(200); // For testing only, can be removed
     res.send(result.rows);
     console.log('Server request completed: ', result.rows);
   })
@@ -30,10 +29,22 @@ router.post('/', (req, res) => {
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/:id', (req, res) => {
-  let sqlParam
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+  let sqlID = req.params;
+  let sqlUserId = req.user.id;
   let sqlQuery = `
+  DELETE FROM "item"
+  WHERE "id"=$1 AND "user_id"=$2
   `
+  pool.query(sqlQuery, [sqlID, sqlUserId])
+  .then(result => {
+    console.log('Deleted survey from database, ', results);
+    res.sendStatus(200);
+  })
+  .catch (error => {
+    console.log('Error in DELETEing an item from database: ', error);
+    res.sendStatus(500);
+  })
   // endpoint functionality
 });
 
