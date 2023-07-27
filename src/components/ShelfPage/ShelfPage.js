@@ -1,12 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import useReduxStore from "../../hooks/useReduxStore";
 
 
 function ShelfPage() {
   // useSelector for items
-  const items = useSelector(store => store.useItems)
+  const items = useSelector(store => store.items)
 
   // useState to set description and image
   const [newItemDescription, setNewItemDescription] = useState("");
