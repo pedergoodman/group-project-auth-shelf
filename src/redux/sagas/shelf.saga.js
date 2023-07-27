@@ -11,8 +11,28 @@ function* fetchItems() {
   }
 }
 
+function* addItem(action) {
+  try {
+    const itemToAdd = yield axios.post("/api/shelf", action.payload);
+    yield put({ type: "FETCH_ITEMS" });
+  } catch (error) {
+    console.log("Error adding item to shelf:", error);
+  }
+}
+
+function* deleteItem(action) {
+  try {
+    const itemToDelete = yield axios.delete("/api/shelf", action.payload);
+    yield put({ type: "FETCH_ITEMS" });
+  } catch (error) {
+    console.log("Error deleting item from shelf:", error);
+  }
+}
+
 function* shelfSaga() {
-    yield takeLatest('FETCH_ITEMS', fetchItems);
+  yield takeLatest("FETCH_ITEMS", fetchItems);
+  yield takeLatest("ADD_ITEM", addItem);
+  yield takeLatest("DELETE_ITEM", deleteItem);
 }
 
 export default shelfSaga;
