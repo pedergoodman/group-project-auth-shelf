@@ -14,6 +14,23 @@ router.get('/', (req, res) => {
  */
 router.post('/', (req, res) => {
   // endpoint functionality
+  console.log('inside of /api/shelf req.body', req.body);
+  let description = req.body
+  let imgUrl = req.body
+  //queryText for data fields and sql injection 
+  const queryText = `INSERT INTO "item" (description, image_url)
+  VALUES($1, $2)`
+  //redeclaring data fields 
+  const queryParams = [description, imgUrl]
+  //bringing in pool 
+  pool.query(queryText, queryParams)
+    .then((results) => {
+      res.send(201)
+    }).catch((error) => {
+      console.log(`error making query ${queryText}` , error);
+      res.sendStatus(500)
+    })
+    res.sendStatus(200)
 });
 
 /**
