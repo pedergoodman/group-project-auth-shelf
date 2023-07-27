@@ -40,7 +40,6 @@ router.post('/',rejectUnauthenticated, (req, res) => {
       console.log(`error making query ${queryText}` , error);
       res.sendStatus(500)
     })
-    res.sendStatus(200)
 });
 
 /**
