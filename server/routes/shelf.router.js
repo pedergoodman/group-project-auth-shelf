@@ -47,7 +47,7 @@ router.post('/',rejectUnauthenticated, (req, res) => {
  * Delete an item if it's something the logged in user added
  */
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
-  let sqlID = req.params;
+  let sqlID = req.params.id;
   let sqlUserId = req.user.id;
   let sqlQuery = `
   DELETE FROM "item"
@@ -55,7 +55,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
   `
   pool.query(sqlQuery, [sqlID, sqlUserId])
   .then(result => {
-    console.log('Deleted survey from database, ', results);
+    console.log('Deleted survey from database, ', result);
     res.sendStatus(200);
   })
   .catch (error => {

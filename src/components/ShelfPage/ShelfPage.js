@@ -70,14 +70,14 @@ function ShelfPage() {
             <li key={item.id}>
               <p>{item.description}</p>
               <img src={item.image_url} />
-              { item.user_id = user.id ?
-              <button onClick={() => {
+              { item.user_id == user.id ?
+              <button type="button" onClick={() => {
                 dispatch({
                   type: 'DELETE_ITEM',
                   payload: item.id
                 })
               }}>DELETE</button> :
-              <button disabled>DELETE</button>
+              <></>
 
               }
             </li>
