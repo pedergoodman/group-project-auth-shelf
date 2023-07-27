@@ -1,9 +1,11 @@
 import React from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect} from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 
 function ShelfPage() {
+  // useDispatch to send data to store
+  const dispatch = useDispatch();
   // useSelector for items
   const items = useSelector(store => store.items)
 
@@ -20,6 +22,11 @@ function ShelfPage() {
     setNewItemImage("");
   };
 
+  // useEffect to display items 
+  useEffect(() => {
+    dispatch({type:"FETCH_ITEMS"})
+  }, [])
+  
   return (
     <div className="container">
       <h2>Shelf</h2>
