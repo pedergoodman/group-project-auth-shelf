@@ -15,8 +15,8 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   // endpoint functionality
   console.log('inside of /api/shelf req.body', req.body);
-  let description = req.body
-  let imgUrl = req.body
+  let description = req.body.description
+  let imgUrl = req.body.imgUrl
   //queryText for data fields and sql injection 
   const queryText = `INSERT INTO "item" (description, image_url)
   VALUES($1, $2)`
