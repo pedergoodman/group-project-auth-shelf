@@ -8,6 +8,9 @@ function ShelfPage() {
   const dispatch = useDispatch();
   // useSelector for items
   const items = useSelector(store => store.items)
+  const user =  useSelector(store => store.user)
+
+
 
   // useState to set description and image
   const [newItemDescription, setNewItemDescription] = useState("");
@@ -22,11 +25,17 @@ function ShelfPage() {
     setNewItemImage("");
   };
 
+
+
+
   // useEffect to display items 
   useEffect(() => {
     dispatch({type:"FETCH_ITEMS"})
   }, [])
   
+  
+
+
   return (
     <div className="container">
       <h2>Shelf</h2>
@@ -61,6 +70,16 @@ function ShelfPage() {
             <li key={item.id}>
               <p>{item.description}</p>
               <img src={item.image_url} />
+              { item.user_id == user.id ?
+              <button type="button" onClick={() => {
+                dispatch({
+                  type: 'DELETE_ITEM',
+                  payload: item.id
+                })
+              }}>DELETE</button> :
+              <></>
+
+              }
             </li>
           );
         })}
