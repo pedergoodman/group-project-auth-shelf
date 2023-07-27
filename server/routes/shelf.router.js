@@ -1,12 +1,22 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware')
 
 /**
  * Get all of the items on the shelf
  */
-router.get('/', (req, res) => {
-  res.sendStatus(200); // For testing only, can be removed
+router.get('/', rejectUnauthenticated, (req, res) => {
+  let sqlQuery = `SELECT * FROM "item";`;
+  pool.query(sqlQuery)
+  .then (result => {
+    res.send(result.rows);
+    console.log('Server request completed: ', result.rows);
+  })
+  .catch( error => {
+    console.log('Error in GET of /shelf; ', error);
+    res.sendStatus(500)
+  })
 });
 
 /**
@@ -36,7 +46,22 @@ router.post('/', (req, res) => {
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+  let sqlID = req.params;
+  let sqlUserId = req.user.id;
+  let sqlQuery = `
+  DELETE FROM "item"
+  WHERE "id"=$1 AND "user_id"=$2
+  `
+  pool.query(sqlQuery, [sqlID, sqlUserId])
+  .then(result => {
+    console.log('Deleted survey from database, ', results);
+    res.sendStatus(200);
+  })
+  .catch (error => {
+    console.log('Error in DELETEing an item from database: ', error);
+    res.sendStatus(500);
+  })
   // endpoint functionality
 });
 
