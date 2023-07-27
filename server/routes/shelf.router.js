@@ -27,11 +27,12 @@ router.post('/',rejectUnauthenticated, (req, res) => {
   console.log('inside of /api/shelf req.body', req.body);
   let description = req.body.description
   let imgUrl = req.body.imgUrl
+  let userId = req.user.id
   //queryText for data fields and sql injection 
-  const queryText = `INSERT INTO "item" (description, image_url)
-  VALUES($1, $2)`
+  const queryText = `INSERT INTO "item" (description, image_url, user_id)
+  VALUES($1, $2, $3)`
   //redeclaring data fields 
-  const queryParams = [description, imgUrl]
+  const queryParams = [description, imgUrl, userId]
   //bringing in pool 
   pool.query(queryText, queryParams)
     .then((results) => {
@@ -40,7 +41,6 @@ router.post('/',rejectUnauthenticated, (req, res) => {
       console.log(`error making query ${queryText}` , error);
       res.sendStatus(500)
     })
-    res.sendStatus(200)
 });
 
 /**
