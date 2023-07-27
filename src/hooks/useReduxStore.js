@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
-
+import { useSelector } from "react-redux";
+import items from "../redux/reducers/item.reducer";
 //These aren't used in the project, but are something you could use
-
 
 //Custom Hook -- uses other hooks
 const useReduxStore = () => {
@@ -16,5 +15,9 @@ const useUser = () => {
   return useSelector(store => store.user)
 }
 */
+
+const useItems = () => {
+  return useSelector((store) => store.items);
+};
 
 export default useReduxStore;
