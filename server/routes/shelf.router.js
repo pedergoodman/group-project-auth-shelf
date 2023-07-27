@@ -11,6 +11,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   pool.query(sqlQuery)
   .then (result => {
     res.sendStatus(200); // For testing only, can be removed
+    res.send(result.rows);
     console.log('Server request completed: ', result.rows);
   })
   .catch( error => {
@@ -30,6 +31,9 @@ router.post('/', (req, res) => {
  * Delete an item if it's something the logged in user added
  */
 router.delete('/:id', (req, res) => {
+  let sqlParam
+  let sqlQuery = `
+  `
   // endpoint functionality
 });
 
